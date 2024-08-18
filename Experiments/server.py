@@ -225,10 +225,7 @@ def Fedavg_server(client_set, dev=args['device'], client_num=20, client_per=0.5,
     init_parameters = init_global_mapping_model.state_dict()
 
     # set the earlystopping
-    if alpha == 1 and beta ==100:
-        earlystopping = Fed_avg_EarlyStopping(patience=15, delta=0)
-    else:
-        earlystopping = Fed_avg_EarlyStopping(patience=15, delta=0.0001)
+    earlystopping = Fed_avg_EarlyStopping(patience=15, delta=0.00001)
 
     # % the parameters of global mapping will not be updated during client training
     for p in Fed_avg_model.global_mapping.parameters():
@@ -588,7 +585,7 @@ def Fedavg_without_personalization_server(client_set, dev=args['device'], client
                                                     hidden_size, num_layers, forecast_period, window_width=window_width).to(dev)
     init_parameters = init_global_mapping_model.state_dict()
 
-    # set the earlystopping
+    # set the earlystopping and set optimized patience
     if alpha == 1 and beta ==1:
         earlystopping = Fed_avg_without_personalization_EarlyStopping(patience=25)
     else:
