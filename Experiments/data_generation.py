@@ -17,23 +17,15 @@ from tsmoothie.smoother import *
 
 ### USE KALMAN FILTER TO SMOOTH ALL DATA (ONLY VISUALIZATION PURPOSE) ###
 
-smoother = KalmanSmoother(component='level_longseason',
-                          component_noise={'level':0.1, 'longseason':0.1},
-                          n_longseasons=365)
-
 csvdata = read_csv('London_hh_residential.csv', engine='python').values
 original_data = read_csv('London_hh_residential.csv', engine='python').values
 
 def wavelet_denoising(data, coe=0.0):
     #np.random_seed(6)
-    # 小波函数取db4
     db4 = pywt.Wavelet('db4')
-    # 分解
     coeffs = pywt.wavedec(data, db4)
-    # 高频系数置零
     coeffs[len(coeffs) - 1] *= coe
     #coeffs[len(coeffs) - 2] *= 0
-    # 重构
     meta = pywt.waverec(coeffs, db4)
     #print(data)
     #print(meta)
