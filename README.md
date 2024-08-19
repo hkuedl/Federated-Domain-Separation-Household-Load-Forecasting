@@ -34,6 +34,11 @@ If you would like to see how the central server works, please refer to
 "server.py".
 ```
 
+If you would like to see the details about the model construction, please refer to
+```
+"Forecasting_models.py".
+```
+
 ### Data
 The data file is too large to upload. I will be uploading the data to the cloud storage as soon as possible. 
 
