@@ -15,33 +15,10 @@ from torch.utils.data import DataLoader
 import pywt
 from tsmoothie.smoother import *
 
-### USE KALMAN FILTER TO SMOOTH ALL DATA (ONLY VISUALIZATION PURPOSE) ###
-
 csvdata = read_csv('London_hh_residential.csv', engine='python').values
 original_data = read_csv('London_hh_residential.csv', engine='python').values
 
-def wavelet_denoising(data, coe=0.0):
-    #np.random_seed(6)
-    db4 = pywt.Wavelet('db4')
-    coeffs = pywt.wavedec(data, db4)
-    coeffs[len(coeffs) - 1] *= coe
-    #coeffs[len(coeffs) - 2] *= 0
-    meta = pywt.waverec(coeffs, db4)
-    #print(data)
-    #print(meta)
-    return meta
-
-def add_gaussian_noise(tensor, mean=0, std=2.5):
-    #print(tensor.shape)
-    noise_p = abs(np.mean(tensor[:,0]))*2.5/100
-
-    noise = np.random.normal(0, noise_p, tensor.shape)
-
-    #noise = torch.randn((tensor.size)) * std
-    noise[:, 1] = np.zeros((noise.shape[0]))
-    noisy_tensor = tensor.copy() + noise
-    return noisy_tensor
-
+## TRANSFORM THE ORIGINAL DATA INTO PYTORCH DATALOADER FORMAT
 class London_sm_data(Dataset):
     def __init__(self, dataset_type='train', start_date='2013-09-01', train_split='2013-12-01', client=1,\
                  forecast_period=1, window_width=10, valid_split=0.1):
@@ -159,4 +136,24 @@ class London_sm_data(Dataset):
 #print(trainx)
 #print(ds.__len__())
 
+def wavelet_denoising(data, coe=0.0):
+    #np.random_seed(6)
+    db4 = pywt.Wavelet('db4')
+    coeffs = pywt.wavedec(data, db4)
+    coeffs[len(coeffs) - 1] *= coe
+    #coeffs[len(coeffs) - 2] *= 0
+    meta = pywt.waverec(coeffs, db4)
+    #print(data)
+    #print(meta)
+    return meta
 
+def add_gaussian_noise(tensor, mean=0, std=2.5):
+    #print(tensor.shape)
+    noise_p = abs(np.mean(tensor[:,0]))*2.5/100
+
+    noise = np.random.normal(0, noise_p, tensor.shape)
+
+    #noise = torch.randn((tensor.size)) * std
+    noise[:, 1] = np.zeros((noise.shape[0]))
+    noisy_tensor = tensor.copy() + noise
+    return noisy_tensor
