@@ -1,4 +1,4 @@
-# FederatedDomainSeparation
+# Federated-Domain-Separation-Household-Load
 Codes for "Federated Domain Separation for Distributed Forecasting of Non-IID Household Loads"
 
 
